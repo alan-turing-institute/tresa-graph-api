@@ -13,14 +13,27 @@ python -m pip install tresa_graph_api
 ```
 
 From source:
+
 ```bash
 git clone https://github.com/alan-turing-institute/tresa-graph-api
 cd tresa-graph-api
+```
+
+Then install the package:
+
+```bash
 python -m pip install .
+```
+
+or in editable mode (useful for development):
+
+```bash
+python -m pip install -e .
 ```
 
 ## Usage
 
+Tool under development. For now, the only working script is `check_all_users.py`.
 
 ## Contributing
 
