@@ -4,7 +4,7 @@ This script is used to get user data from Microsoft Entra ID using Microsoft Gra
 The user data is printed to the console in the following format:
 "User ID, Display Name, Email, Member Of, Roles"
 
-Usage: `python run_graph_api.py`
+Usage: `python check_all_users.py`
 You will be prompted to open a browser and authenticate using your Admin credentials.
 """
 
