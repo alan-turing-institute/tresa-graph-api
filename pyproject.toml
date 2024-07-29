@@ -39,7 +39,10 @@ classifiers = [
   "Topic :: Scientific/Engineering",
   "Typing :: Typed",
 ]
-dependencies = []
+dependencies = [
+  "azure-identity",
+  "msgraph-sdk",
+]
 
 [project.optional-dependencies]
 dev = [
