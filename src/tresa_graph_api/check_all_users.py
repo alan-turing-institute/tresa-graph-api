@@ -12,12 +12,35 @@ You will be prompted to open a browser and authenticate using your Admin credent
 from azure.identity import DeviceCodeCredential
 from msgraph import GraphServiceClient
 import asyncio
+import argparse
+import sys
 
 
 credentials = DeviceCodeCredential()
 scopes = ['https://graph.microsoft.com/.default']
 
 client = GraphServiceClient(credentials=credentials, scopes=scopes)
+
+
+def cli(args=None):
+
+    if not args:
+        args = sys.argv[1:]
+
+    parser = argparse.ArgumentParser(description="Get user data from Microsoft Entra ID using Microsoft Graph API.")
+    subparsers = parser.add_subparsers(dest="command")
+
+    user_parser = subparsers.add_parser("user", help="Get user data.")
+    user_parser.add_argument("--id", type=str, help="The user ID to get data for.")
+    user_parser.add_argument("--name", type=str, help="The user name to get data for.")
+    user_parser.add_argument("--email", type=str, help="The user email to get data for.")
+    user_parser.add_argument("--admins", action="store_true", help="Get data for all admins.")
+    user_parser.add_argument("--unassigned", action="store_true", help="Get data for all unassigned users.")
+
+    subparsers.add_parser("group", help="Get group data.")
+
+    args = parser.parse_args(args)
+    asyncio.run(main(args))
 
 
 async def get_users():
@@ -44,7 +67,7 @@ async def get_groups():
     return group_data
 
 
-async def main():
+async def main(args):
     users = await get_users()
     groups = await get_groups()
 
@@ -59,4 +82,5 @@ async def main():
         print(user.id, ",", user.display_name, ",", user.mail, ",", member_of, ",", roles)
 
 
-data = asyncio.run(main())
+if __name__ == "__main__":
+    cli()
