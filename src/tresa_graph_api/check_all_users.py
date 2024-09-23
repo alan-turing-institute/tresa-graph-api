@@ -36,10 +36,16 @@ def cli(args=None):
     user_parser.add_argument(
         "--unassigned", action="store_true", help="Get data for all unassigned users."
     )
+    user_parser.add_argument(
+        "--all", action="store_true", help="Get data for all users."
+    )
 
     group_parser = subparsers.add_parser("group", help="Get group data.")
     group_parser.add_argument(
         "--name", type=str, help="The group name to get data for."
+    )
+    group_parser.add_argument(
+        "--all", action="store_true", help="Get data for all groups."
     )
 
     args = parser.parse_args(args)
@@ -92,7 +98,7 @@ async def main(args):
                 except AttributeError:
                     # Some users do not have an email address
                     continue
-        elif args.admins or args.unassigned:
+        elif args.admins or args.unassigned or args.all:
             fetched_users = users
 
         print("User ID, Display Name, Email, Member of, Is Global Admin")
@@ -190,8 +196,20 @@ async def main(args):
                     print("\n")
             else:
                 print("No group found for the given criteria.")
-        else:
-            print("No group found for the given criteria.")
+        elif args.all:
+            for group_name, members in groups.items():
+                print(f"Group: {group_name}")
+                print("--------------------")
+                print("User ID, Display Name, Email")
+                print("----------------------------")
+                for member_id in members:
+                    try:
+                        member = next(user for user in users if user.id == member_id)
+                    except StopIteration:
+                        continue
+                    print(member.id, ",", member.display_name, ",", member.mail)
+                    print("\n")
+                print("\n")
 
 
 if __name__ == "__main__":
