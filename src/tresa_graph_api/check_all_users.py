@@ -1,13 +1,3 @@
-"""
-This script is used to get user data from Microsoft Entra ID using Microsoft Graph API.
-
-The user data is printed to the console in the following format:
-"User ID, Display Name, Email, Member Of, Roles"
-
-Usage: `python check_all_users.py`
-You will be prompted to open a browser and authenticate using your Admin credentials.
-"""
-
 import argparse
 import asyncio
 import sys
@@ -23,10 +13,14 @@ client = GraphServiceClient(credentials=credentials, scopes=scopes)
 
 def cli(args=None):
     if not args:
-        args = sys.argv[1:]
+        args = sys.argv[1:]  # takes the arguments from the command line
 
     parser = argparse.ArgumentParser(
-        description="Get user data from Microsoft Entra ID using Microsoft Graph API."
+        description="""
+        Get user and group data from Microsoft Entra ID using the Microsoft Graph API.
+        You will be prompted to open a browser and authenticate using your Admin
+        credentials.
+        """
     )
     subparsers = parser.add_subparsers(dest="command")
 
@@ -53,17 +47,20 @@ def cli(args=None):
 
 
 async def get_users():
+    """Fetches information about all users in the organization."""
     users = await client.users.get()
     return users.value
 
 
 async def get_user_roles(user_id):
+    """Fetches the roles of a user in the organization."""
     roles = await client.users.by_user_id(user_id).member_of.get()
     roles = roles.value
     return [role.display_name for role in roles]
 
 
 async def get_groups():
+    """Fetches information about all groups in the organization."""
     groups = await client.groups.get()
     groups = groups.value
     group_data = {}
