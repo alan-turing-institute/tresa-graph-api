@@ -42,6 +42,7 @@ classifiers = [
 dependencies = [
   "azure-identity",
   "msgraph-sdk",
+  "argparse",
 ]
 
 [project.optional-dependencies]
