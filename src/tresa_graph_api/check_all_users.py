@@ -43,7 +43,10 @@ def cli(args=None):
         "--unassigned", action="store_true", help="Get data for all unassigned users."
     )
 
-    subparsers.add_parser("group", help="Get group data.")
+    group_parser = subparsers.add_parser("group", help="Get group data.")
+    group_parser.add_argument(
+        "--name", type=str, help="The group name to get data for."
+    )
 
     args = parser.parse_args(args)
     asyncio.run(main(args))
@@ -156,7 +159,33 @@ async def main(args):
             print("No users found for the given criteria.")
 
     elif args.command == "group":
-        print("Requested group data")
+        if args.name:
+            group_names = [
+                group_name
+                for group_name in groups
+                if args.name.lower() in group_name.lower()
+            ]
+            if group_names:
+                for group_name in group_names:
+                    members = groups[group_name]
+                    print(f"Group: {group_name}")
+                    print("--------------------")
+                    print("User ID, Display Name, Email")
+                    print("----------------------------")
+                    for member_id in members:
+                        try:
+                            member = next(
+                                user for user in users if user.id == member_id
+                            )
+                        except StopIteration:
+                            continue
+                        print(member.id, ",", member.display_name, ",", member.mail)
+                        print("\n")
+                    print("\n")
+            else:
+                print("No group found for the given criteria.")
+        else:
+            print("No group found for the given criteria.")
 
 
 if __name__ == "__main__":
