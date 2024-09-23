@@ -80,9 +80,18 @@ async def main(args):
         if args.id:
             fetched_users = [user for user in users if user.id == args.id]
         elif args.name:
-            fetched_users = [user for user in users if args.name in user.display_name]
+            fetched_users = [
+                user for user in users if args.name.lower() in user.display_name.lower()
+            ]
         elif args.email:
-            fetched_users = [user for user in users if user.mail == args.email]
+            fetched_users = []
+            for user in users:
+                try:
+                    if user.mail.lower() == args.email.lower():
+                        fetched_users.append(user)
+                except AttributeError:
+                    # Some users do not have an email address
+                    continue
         elif args.admins or args.unassigned:
             fetched_users = users
 
