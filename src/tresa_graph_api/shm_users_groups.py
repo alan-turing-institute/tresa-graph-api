@@ -2,10 +2,12 @@ import argparse
 import asyncio
 import sys
 
-from azure.identity import DeviceCodeCredential  # type: ignore[import-not-found]
+from azure.identity import (  # type: ignore[import-not-found]
+    InteractiveBrowserCredential,
+)
 from msgraph import GraphServiceClient  # type: ignore[import-not-found]
 
-credentials = DeviceCodeCredential()
+credentials = InteractiveBrowserCredential()
 scopes = ["https://graph.microsoft.com/.default"]
 
 client = GraphServiceClient(credentials=credentials, scopes=scopes)
