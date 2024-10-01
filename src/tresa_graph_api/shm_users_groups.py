@@ -21,7 +21,7 @@ def cli(args=None):
         description="""
         Get user and group data from Microsoft Entra ID using the Microsoft Graph API.
         You will be prompted to open a browser and authenticate using your Admin
-        credentials.
+        credentials. The results of the query will be printed to the terminal.
         """
     )
     subparsers = parser.add_subparsers(dest="command")
