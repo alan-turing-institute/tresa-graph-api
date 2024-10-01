@@ -1,5 +1,6 @@
 """
-tresa-graph-api: Using the Microsoft Graph API to check active users in the Turing's Data Safe Haven
+tresa-graph-api: Using the Microsoft Graph API to check users and groups
+in the Turing's Data Safe Haven
 """
 
 from __future__ import annotations
