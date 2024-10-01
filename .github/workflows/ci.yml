@@ -23,6 +23,8 @@ jobs:
           extra_args: --hook-stage manual --all-files
 
   checks:
+    # disable this job for now because tests have not been implemented
+    if: false
     name: Run tests for Python ${{ matrix.python-version }} on ${{ matrix.runs-on }}
     runs-on: ${{ matrix.runs-on }}
     needs: [pre-commit]
